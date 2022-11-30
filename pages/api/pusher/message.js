@@ -1,8 +1,5 @@
-const Pusher = require('pusher')
 import NextCors from 'nextjs-cors'
-
-const pusherConfig = require('@/const/pusher.json')
-const pusherClient = new Pusher(pusherConfig)
+import pusher from '@/lib/pusher'
 
 export default async function handler(req, res) {
   await NextCors(req, res, {
@@ -11,9 +8,6 @@ export default async function handler(req, res) {
     optionsSuccessStatus: 200,
   })
 
-  console.log(req.body)
-
-  pusherClient.trigger('palbud-demo', 'message', req.body)
-
+  pusher.trigger('palbud-demo', 'message', req.body)
   res.status(200).send()
 }
