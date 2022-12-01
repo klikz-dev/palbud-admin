@@ -37,7 +37,7 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
               {index + 1 === routes.length && (
                 <div className={`border-b ${'border-white/10'}`}></div>
               )}
-              <Link href={`/${link}`}>
+              <Link href={link}>
                 <Button
                   variant={'text'}
                   color={'white'}
