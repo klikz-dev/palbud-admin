@@ -9,6 +9,7 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react'
+import dateFormat from 'dateformat'
 
 export default function Overview({ caregivers, careteams, families, matches }) {
   console.log(caregivers)
@@ -204,6 +205,38 @@ export default function Overview({ caregivers, careteams, families, matches }) {
             </TabPanel>
           </TabsBody>
         </Tabs>
+      </div>
+
+      <div className='shadow rounded p-6'>
+        <Typography variant='h4' className='mb-4 pb-2 border-b'>
+          Caregiving Sessions
+        </Typography>
+
+        <div>
+          <div className='flex flex-row gap-0.5 mb-2'>
+            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Parent</div>
+            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
+              Child/Client
+            </div>
+            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Caregiver</div>
+            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Date</div>
+          </div>
+
+          {families?.map((family, index) => (
+            <div key={index} className='flex flex-row gap-0.5 mb-1'>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                {family.firstName} {family.lastName}
+              </div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                {family.childFirstName} {family.childLastName}
+              </div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>John Lee</div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </Layout>
   )

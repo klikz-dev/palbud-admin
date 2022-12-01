@@ -6,6 +6,8 @@ import Avatar from 'react-avatar'
 export default function Header({ title, setOpenSidenav }) {
   const { data: session } = useSession()
 
+  console.log(session)
+
   return (
     <div className='px-4 py-2 shadow'>
       <div className='max-w-screen-2xl mx-auto flex flex-row justify-between items-center space-x-12'>
