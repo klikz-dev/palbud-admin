@@ -1,13 +1,15 @@
+import getAdminById from '@/functions/getAdminById'
 import { auth } from '@/lib/firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-function createUserObj(user) {
+function createTokenObj(user, admin) {
   return {
     id: user?.uid,
     accessToken: user?.accessToken,
     email: user?.email,
+    ...admin,
   }
 }
 
@@ -40,8 +42,12 @@ export default NextAuth({
         )
 
         if (userCredential?.user?.uid) {
-          const user = createUserObj(userCredential.user)
-          return user
+          const admin = await getAdminById(userCredential?.user?.uid)
+          if (!admin?.status) {
+            return null
+          }
+
+          return createTokenObj(userCredential.user, admin)
         } else {
           return null
         }

@@ -1,7 +1,11 @@
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowRightOnRectangleIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
 import { Button, IconButton, Typography } from '@material-tailwind/react'
 import Link from '@/components/atoms/Link'
 import Logo from '@/components/molecules/Logo'
+import { signOut } from 'next-auth/react'
 
 export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
   return (
@@ -55,6 +59,21 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
               </Link>
             </li>
           ))}
+
+          <li className={'absolute bottom-4 w-[calc(100%-32px)]'}>
+            <Button
+              variant={'text'}
+              color={'white'}
+              className='flex items-center gap-4 px-4 capitalize'
+              fullWidth
+              onClick={signOut}
+            >
+              <ArrowRightOnRectangleIcon width={24} />
+              <Typography color='inherit' className='font-medium capitalize'>
+                Sign Out
+              </Typography>
+            </Button>
+          </li>
         </ul>
       </div>
     </aside>

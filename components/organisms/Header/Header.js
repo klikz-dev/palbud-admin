@@ -23,13 +23,13 @@ export default function Header({ title, setOpenSidenav }) {
         <Typography variant='h4'>{title}</Typography>
 
         <div className='flex flex-row items-center font-bold'>
-          <Typography variant='body' className='mr-4 font-bold'>
-            {session?.first_name} {session?.last_name}
+          <Typography variant='paragraph' className='mr-4 font-bold'>
+            {session?.firstName} {session?.lastName}
           </Typography>
 
           <Avatar
             email={session?.email}
-            name={`${session?.first_name} ${session?.last_name}`}
+            name={`${session?.firstName} ${session?.lastName}`}
             size={40}
             round={true}
             className=''
