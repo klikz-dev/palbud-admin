@@ -1,4 +1,4 @@
-import getAdminById from '@/functions/getAdminById'
+import getDocument from '@/functions/getDocument'
 import { auth } from '@/lib/firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import NextAuth from 'next-auth'
@@ -42,7 +42,7 @@ export default NextAuth({
         )
 
         if (userCredential?.user?.uid) {
-          const admin = await getAdminById(userCredential?.user?.uid)
+          const admin = await getDocument('admin', userCredential?.user?.uid)
           if (!admin?.status) {
             return null
           }
