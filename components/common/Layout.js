@@ -55,7 +55,7 @@ export default function Layout({ title, children }) {
             setOpenSidenav={setOpenSidenav}
           />
 
-          <div className='p-4 xl:ml-80'>
+          <div className='pl-5 pr-4 py-2 xl:ml-72'>
             <div className='text-blue-gray-900'>
               <Header title={title} setOpenSidenav={setOpenSidenav} />
             </div>
