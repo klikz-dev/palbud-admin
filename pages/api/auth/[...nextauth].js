@@ -1,11 +1,13 @@
+import { auth } from '@/lib/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-function createUserObj(token, user) {
+function createUserObj(user) {
   return {
-    accessToken: token,
-    accessTokenExpires: new Date().getTime() + 86400 * 1000,
-    ...user,
+    id: user?.uid,
+    accessToken: user?.accessToken,
+    email: user?.email,
   }
 }
 
@@ -15,6 +17,7 @@ export default NextAuth({
     signOut: '/',
     error: '/',
   },
+
   providers: [
     CredentialsProvider({
       id: 'un-pw-login',
@@ -26,49 +29,36 @@ export default NextAuth({
         },
         password: { label: 'Password', type: 'password' },
       },
+
       async authorize(credentials) {
-        const tokenRes = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/dj-rest-auth/login/`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials),
-            redirect: 'follow',
-          }
+        const { email, password } = credentials
+
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
         )
-        const tokenData = await tokenRes.json()
-        const token = tokenData.key
 
-        if (token) {
-          const userRes = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/dj-rest-auth/user/`,
-            {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${token}`,
-              },
-              redirect: 'follow',
-            }
-          )
-          const user = await userRes.json()
-
-          if (user) {
-            return createUserObj(token, user)
-          }
+        if (userCredential?.user?.uid) {
+          const user = createUserObj(userCredential.user)
+          return user
+        } else {
           return null
         }
-        return null
       },
     }),
   ],
+
   session: {
     jwt: true,
   },
+
   secret: process.env.JWT_SECRET_KEY,
+
   jwt: {
     secret: process.env.JWT_SECRET_KEY,
   },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
