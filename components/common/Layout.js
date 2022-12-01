@@ -1,9 +1,9 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import Divider from '../atoms/Divider'
-import Loading from '../atoms/Loading'
-import Footer from '../organisms/Footer'
-import Header from '../organisms/Header'
+import Divider from '@/components/atoms/Divider'
+import Loading from '@/components/atoms/Loading'
+import Footer from '@/components/organisms/Footer'
+import Header from '@/components/organisms/Header'
 
 export default function Layout({ title, children }) {
   const router = useRouter()

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
-import Input from '@/components/atoms/Input'
+// import Input from '@/components/atoms/Input'
 import Logo from '../Logo'
+import { Button, Input } from '@material-tailwind/react'
 
 export default function SigninForm() {
   const router = useRouter()
@@ -39,34 +40,40 @@ export default function SigninForm() {
         Enter your email and password below
       </p>
 
-      <form
-        className='mt-4 mb-4 flex flex-col items-start gap-4 rounded w-72'
-        onSubmit={handleLogin}
-      >
+      <div className='mt-4 mb-4 flex flex-col items-start gap-4 rounded w-72'>
         <Input
+          variant='standard'
           id='email'
           name='email'
           type='email'
-          placeholder='Your Email'
+          label='Your Email'
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <Input
+          variant='standard'
           id='password'
           name='password'
           type='password'
-          placeholder='Your Password'
+          label='Your Password'
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Input type='submit' value='Sign in' />
+        <Button
+          fullWidth
+          color='indigo'
+          onClick={handleLogin}
+          disabled={!email || !password}
+        >
+          Log In
+        </Button>
 
         {error && <p className='text-red'>{error}</p>}
-      </form>
+      </div>
     </div>
   )
 }

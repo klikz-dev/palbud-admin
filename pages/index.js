@@ -12,7 +12,7 @@ export default function Page() {
     if (session?.accessTokenExpires < new Date().getTime()) {
       signOut()
     } else {
-      router.push('/orders')
+      router.push('/overview')
     }
   } else if (status === 'unauthenticated') {
     return (
