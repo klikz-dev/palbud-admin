@@ -26,7 +26,6 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
           variant='text'
           color='white'
           size='sm'
-          ripple={false}
           className='absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden'
           onClick={() => setOpenSidenav(false)}
         >

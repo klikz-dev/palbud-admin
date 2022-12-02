@@ -6,8 +6,6 @@ import Avatar from 'react-avatar'
 export default function Header({ title, setOpenSidenav }) {
   const { data: session } = useSession()
 
-  console.log(session)
-
   return (
     <div className='px-4 py-2 shadow'>
       <div className='max-w-screen-2xl mx-auto flex flex-row justify-between items-center space-x-12'>
@@ -15,18 +13,21 @@ export default function Header({ title, setOpenSidenav }) {
           variant='text'
           color='white'
           size='sm'
-          ripple={false}
           className='grid rounded-br-none rounded-tl-none xl:hidden'
           onClick={() => setOpenSidenav(true)}
         >
           <Bars3Icon strokeWidth={2.5} className='h-5 w-5 text-blue-gray-800' />
         </IconButton>
 
-        <Typography variant='h4'>{title}</Typography>
+        <Typography variant='h4'>
+          <span>{title}</span>
+        </Typography>
 
         <div className='flex flex-row items-center font-bold'>
           <Typography variant='paragraph' className='mr-4 font-bold'>
-            {session?.firstName} {session?.lastName}
+            <span>
+              {session?.firstName} {session?.lastName}
+            </span>
           </Typography>
 
           <Avatar

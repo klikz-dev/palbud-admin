@@ -1,6 +1,6 @@
 import Layout from '@/components/common/Layout'
 import Chart from '@/components/organisms/Chart'
-import getCollection from '@/functions/getCollection'
+import { useCollection } from '@/functions/useCollection'
 import {
   Tab,
   TabPanel,
@@ -11,11 +11,10 @@ import {
 } from '@material-tailwind/react'
 import dateFormat from 'dateformat'
 
-export default function Overview({ caregivers, careteams, families, matches }) {
-  console.log(caregivers)
-  console.log(careteams)
-  console.log(families)
-  console.log(matches)
+export default function Overview() {
+  const { data: caregivers } = useCollection('caregiver')
+  const { data: families } = useCollection('family')
+  const { data: matches } = useCollection('match')
 
   const caregiverChartdata = [
     {
@@ -159,17 +158,23 @@ export default function Overview({ caregivers, careteams, families, matches }) {
           <TabsHeader>
             <Tab key='caregivers' value='caregivers' className='py-3'>
               <Typography variant='paragraph'>Caregivers</Typography>
-              <Typography variant='h3'>{caregivers?.length}</Typography>
+              <Typography variant='h3'>
+                <span>{caregivers?.length}</span>
+              </Typography>
             </Tab>
 
             <Tab key='families' value='families' className='py-3'>
               <Typography variant='paragraph'>Families</Typography>
-              <Typography variant='h3'>{families?.length}</Typography>
+              <Typography variant='h3'>
+                <span>{families?.length}</span>
+              </Typography>
             </Tab>
 
             <Tab key='matches' value='matches' className='py-3'>
               <Typography variant='paragraph'>Matches</Typography>
-              <Typography variant='h3'>{matches?.length}</Typography>
+              <Typography variant='h3'>
+                <span>{matches?.length}</span>
+              </Typography>
             </Tab>
           </TabsHeader>
 
@@ -240,20 +245,4 @@ export default function Overview({ caregivers, careteams, families, matches }) {
       </div>
     </Layout>
   )
-}
-
-export async function getServerSideProps() {
-  const caregivers = await getCollection('caregiver')
-  const careteams = await getCollection('careteam')
-  const families = await getCollection('family')
-  const matches = await getCollection('match')
-
-  return {
-    props: {
-      caregivers,
-      careteams,
-      families,
-      matches,
-    },
-  }
 }

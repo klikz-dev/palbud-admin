@@ -16,7 +16,6 @@ function createTokenObj(user, admin) {
 export default NextAuth({
   pages: {
     signIn: '/',
-    signOut: '/',
     error: '/',
   },
 

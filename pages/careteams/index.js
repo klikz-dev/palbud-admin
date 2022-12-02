@@ -1,5 +1,5 @@
 import Layout from '@/components/common/Layout'
-import getCollection from '@/functions/getCollection'
+import { useCollection } from '@/functions/useCollection'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -11,7 +11,9 @@ import {
   Typography,
 } from '@material-tailwind/react'
 
-export default function Caregivers({ families }) {
+export default function Careteams() {
+  const { data: families } = useCollection('caregiver')
+
   return (
     <Layout title='Care Teams'>
       <div className='p-4 max-w-6xl mx-auto shadow border rounded mt-12'>
@@ -69,14 +71,4 @@ export default function Caregivers({ families }) {
       </div>
     </Layout>
   )
-}
-
-export async function getServerSideProps() {
-  const families = await getCollection('family')
-
-  return {
-    props: {
-      families,
-    },
-  }
 }

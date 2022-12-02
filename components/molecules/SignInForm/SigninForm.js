@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
-// import Input from '@/components/atoms/Input'
 import Logo from '../Logo'
 import { Button, Input } from '@material-tailwind/react'
 

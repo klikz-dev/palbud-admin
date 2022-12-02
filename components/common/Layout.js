@@ -5,7 +5,6 @@ import Sidenav from '@/components/organisms/Sidenav'
 import {
   ChartPieIcon,
   Cog6ToothIcon,
-  DocumentTextIcon,
   UserCircleIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline'
@@ -28,11 +27,6 @@ export default function Layout({ title, children }) {
       title: 'Care Teams',
       link: '/careteams',
       icon: <UserGroupIcon width={24} />,
-    },
-    {
-      title: 'Articles',
-      link: '/articles',
-      icon: <DocumentTextIcon width={24} />,
     },
     {
       title: 'Settings',
