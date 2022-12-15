@@ -1,5 +1,5 @@
 .button {
-  @apply inline-flex items-center justify-center cursor-pointer font-semibold;
+  @apply inline-flex items-center justify-center cursor-pointer rounded;
 
   /* SIZES */
   &.icon {
@@ -18,17 +18,13 @@
     @apply px-16 py-4;
   }
 
-  &.full {
-    @apply w-full py-2;
-  }
-
   /* Colors */
-  &.black {
-    @apply text-white bg-black hover:bg-zinc-800;
+  &.indigo {
+    @apply text-white bg-indigo-800 hover:bg-indigo-900;
   }
 
-  &.red {
-    @apply text-white bg-red-700 hover:bg-red-500;
+  &.transparent {
+    @apply text-white bg-none hover:bg-white/5;
   }
 
   /** Disabled **/

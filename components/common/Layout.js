@@ -2,36 +2,41 @@ import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Loading from '@/components/atoms/Loading'
 import Sidenav from '@/components/organisms/Sidenav'
-import {
-  ChartPieIcon,
-  Cog6ToothIcon,
-  UserCircleIcon,
-  UserGroupIcon,
-} from '@heroicons/react/24/outline'
 import Header from '@/components/organisms/Header'
 import Footer from '@/components/organisms/Footer'
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faCogs,
+  faHomeAlt,
+  faUserCircle,
+  faUserGroup,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default function Layout({ title, children }) {
   const router = useRouter()
   const { data: session, status } = useSession()
 
   const routes = [
-    { title: 'Overview', link: '/overview', icon: <ChartPieIcon width={24} /> },
+    {
+      title: 'Overview',
+      link: '/overview',
+      icon: <FontAwesomeIcon icon={faHomeAlt} width={20} />,
+    },
     {
       title: 'Caregivers',
       link: '/caregivers',
-      icon: <UserCircleIcon width={24} />,
+      icon: <FontAwesomeIcon icon={faUserCircle} width={20} />,
     },
     {
       title: 'Care Teams',
       link: '/careteams',
-      icon: <UserGroupIcon width={24} />,
+      icon: <FontAwesomeIcon icon={faUserGroup} width={20} />,
     },
     {
       title: 'Settings',
       link: '/settings',
-      icon: <Cog6ToothIcon width={24} />,
+      icon: <FontAwesomeIcon icon={faCogs} width={20} />,
     },
   ]
 
@@ -42,7 +47,7 @@ export default function Layout({ title, children }) {
       signOut()
     } else {
       return (
-        <div className='min-h-screen bg-blue-gray-50/50'>
+        <div className='min-h-screen bg-zinc-50/50'>
           <Sidenav
             routes={routes}
             openSidenav={openSidenav}
