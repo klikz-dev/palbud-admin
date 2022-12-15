@@ -1,14 +1,12 @@
 import Layout from '@/components/common/Layout'
-import Chart from '@/components/organisms/Chart'
-import { useCollection } from '@/functions/useCollection'
-import {
+import Tabs, {
   Tab,
   TabPanel,
-  Tabs,
   TabsBody,
   TabsHeader,
-  Typography,
-} from '@material-tailwind/react'
+} from '@/components/molecules/Tabs'
+import Chart from '@/components/organisms/Chart'
+import { useCollection } from '@/functions/useCollection'
 import dateFormat from 'dateformat'
 
 export default function Overview() {
@@ -157,31 +155,31 @@ export default function Overview() {
         <Tabs value='caregivers'>
           <TabsHeader>
             <Tab key='caregivers' value='caregivers' className='py-3'>
-              <Typography variant='paragraph'>Caregivers</Typography>
-              <Typography variant='h3'>
+              <p>Caregivers</p>
+              <h3>
                 <span>{caregivers?.length}</span>
-              </Typography>
+              </h3>
             </Tab>
 
             <Tab key='families' value='families' className='py-3'>
-              <Typography variant='paragraph'>Families</Typography>
-              <Typography variant='h3'>
+              <p>Families</p>
+              <h3>
                 <span>{families?.length}</span>
-              </Typography>
+              </h3>
             </Tab>
 
             <Tab key='matches' value='matches' className='py-3'>
-              <Typography variant='paragraph'>Matches</Typography>
-              <Typography variant='h3'>
+              <p>Matches</p>
+              <h3>
                 <span>{matches?.length}</span>
-              </Typography>
+              </h3>
             </Tab>
           </TabsHeader>
 
           <TabsBody>
             <TabPanel
               key='caregivers'
-              value='caregivers'
+              value='scaregivers'
               style={{ minHeight: '500px' }}
             >
               <div style={{ height: '400px' }}>
@@ -213,9 +211,7 @@ export default function Overview() {
       </div>
 
       <div className='shadow rounded p-6'>
-        <Typography variant='h4' className='mb-4 pb-2 border-b'>
-          Caregiving Sessions
-        </Typography>
+        <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>
 
         <div>
           <div className='flex flex-row gap-0.5 mb-2'>

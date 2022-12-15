@@ -1,15 +1,5 @@
 import Layout from '@/components/common/Layout'
 import { useCollection } from '@/functions/useCollection'
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
-import {
-  Button,
-  Chip,
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Typography,
-} from '@material-tailwind/react'
 
 export default function Careteams() {
   const { data: families } = useCollection('caregiver')
@@ -17,9 +7,7 @@ export default function Careteams() {
   return (
     <Layout title='Care Teams'>
       <div className='p-4 max-w-6xl mx-auto shadow border rounded mt-12'>
-        <Typography variant='h4' className='mb-4 pb-2 border-b'>
-          All Care Teams
-        </Typography>
+        <h4 className='mb-4 pb-2 border-b'>All Care Teams</h4>
 
         <div className='py-12 max-w-6xl mx-auto'>
           <div className='flex flex-row gap-0.5 mb-2 text-center'>
@@ -43,13 +31,13 @@ export default function Careteams() {
                 {family.childFirstName} {family.childLastName}
               </div>
               <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                <Chip variant='filled' value='Active' />
+                {/* <Chip variant='filled' value='Active' /> */}
               </div>
               <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                <Chip variant='filled' value='Active' />
+                {/* <Chip variant='filled' value='Active' /> */}
               </div>
               <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                <Menu>
+                {/* <Menu>
                   <MenuHandler>
                     <Button variant='text'>
                       <div className='flex flex-row items-center'>
@@ -63,7 +51,7 @@ export default function Careteams() {
                     <MenuItem>Suspend</MenuItem>
                     <MenuItem>Delete</MenuItem>
                   </MenuList>
-                </Menu>
+                </Menu> */}
               </div>
             </div>
           ))}

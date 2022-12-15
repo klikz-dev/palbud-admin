@@ -1,6 +1,5 @@
 import { SessionProvider as NextAuthProvider } from 'next-auth/react'
-import { ThemeProvider } from '@material-tailwind/react'
-import '@/styles/globals.css'
+import '@/styles/globals.scss'
 
 export default function App({
   Component,
@@ -8,9 +7,7 @@ export default function App({
 }) {
   return (
     <NextAuthProvider session={session}>
-      <ThemeProvider>
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <Component {...pageProps} />
     </NextAuthProvider>
   )
 }

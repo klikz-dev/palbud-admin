@@ -1,44 +1,56 @@
-import React from 'react'
+import classNames from 'classnames'
 import NextLink from 'next/link'
 import PropTypes from 'prop-types'
+import styles from './Link.module.scss'
 
 export default function TextLink({
-  attributes,
-  className,
-  style,
+  color,
+  size,
   href,
   urlExternal,
+  className,
   children,
+  ...props
 }) {
-  return urlExternal || href.includes('recommends') ? (
+  const buttonClassNames = classNames(
+    styles.button,
+    styles[color],
+    styles[size],
+    className
+  )
+
+  return urlExternal || href.includes('recommends') || href.includes('http') ? (
     <a
       href={href}
-      className={className}
-      style={style}
+      className={color === 'text' ? '' : buttonClassNames}
       target='_blank'
       rel='noreferrer'
-      {...attributes}
+      {...props}
     >
       {children}
     </a>
   ) : (
-    <NextLink href={href}>
-      <a className={className} style={style} {...attributes}>
-        {children}
-      </a>
+    <NextLink
+      href={href}
+      className={color === 'text' ? '' : buttonClassNames}
+      {...props}
+    >
+      {children}
     </NextLink>
   )
 }
 
 TextLink.propTypes = {
-  attributes: PropTypes.object,
-  className: PropTypes.string,
+  color: PropTypes.oneOf(['text', 'black', 'red']),
+  size: PropTypes.oneOf(['sm', 'md', 'lg', 'full']),
   href: PropTypes.string.isRequired,
   urlExternal: PropTypes.bool,
-  style: PropTypes.object,
+  className: PropTypes.string,
+  props: PropTypes.object,
 }
 
 TextLink.defaultProps = {
-  disabled: false,
+  color: 'black',
+  size: 'md',
   urlExternal: false,
 }

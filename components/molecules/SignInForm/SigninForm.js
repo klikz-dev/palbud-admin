@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { signIn } from 'next-auth/react'
 import Logo from '../Logo'
-import { Button, Input } from '@material-tailwind/react'
+import Input from '@/components/atoms/Input'
+import Button from '@/components/atoms/Button'
 
 export default function SigninForm() {
   const router = useRouter()
@@ -41,29 +42,20 @@ export default function SigninForm() {
 
       <div className='mt-4 mb-4 flex flex-col items-start gap-4 rounded w-72'>
         <Input
-          variant='standard'
-          id='email'
-          name='email'
-          type='email'
-          label='Your Email'
-          required
+          type={'email'}
+          placeholder='Your Email'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          setValue={setEmail}
         />
 
         <Input
-          variant='standard'
-          id='password'
-          name='password'
-          type='password'
-          label='Your Password'
-          required
+          type={'password'}
+          placeholder='Your Password'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          setValue={setPassword}
         />
 
         <Button
-          fullWidth
           color='indigo'
           onClick={handleLogin}
           disabled={!email || !password}

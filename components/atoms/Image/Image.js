@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import Image from 'next/image'
 import { PropTypes } from 'prop-types'
-import styles from './Image.module.css'
+import styles from './Image.module.scss'
 
 export default function DisplayImage({
   src,

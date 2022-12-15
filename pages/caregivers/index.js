@@ -1,18 +1,14 @@
 import Rating from '@/components/atoms/Rating'
 import Layout from '@/components/common/Layout'
-import { useCollection } from '@/functions/useCollection'
-import {
-  CheckBadgeIcon,
-  ClipboardDocumentCheckIcon,
-} from '@heroicons/react/24/solid'
-import {
+import Tabs, {
   Tab,
   TabPanel,
-  Tabs,
   TabsBody,
   TabsHeader,
-  Typography,
-} from '@material-tailwind/react'
+} from '@/components/molecules/Tabs'
+import { useCollection } from '@/functions/useCollection'
+import { faBookReader, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import dateFormat from 'dateformat'
 
 export default function Caregivers() {
@@ -21,24 +17,22 @@ export default function Caregivers() {
   return (
     <Layout title='Caregivers'>
       <div className='p-4 max-w-6xl mx-auto shadow border rounded mt-12'>
-        <Typography variant='h4' className='mb-8 pb-4 border-b'>
-          All Caregivers
-        </Typography>
+        <h4 className='mb-8 pb-4 border-b'>All Caregivers</h4>
 
         <Tabs value='active'>
           <TabsHeader className='w-80 mb-12'>
             <Tab key='active' value='active' className='py-1'>
-              <Typography variant='h6' className='flex items-center gap-1'>
-                <CheckBadgeIcon width={20} />
+              <h5 className='flex items-center gap-1'>
+                <FontAwesomeIcon icon={faCheckCircle} />
                 <span>Active</span>
-              </Typography>
+              </h5>
             </Tab>
 
             <Tab key='pending' value='pending' className='py-1'>
-              <Typography variant='h6' className='flex items-center gap-1'>
-                <ClipboardDocumentCheckIcon width={20} />
+              <h6 className='flex items-center gap-1'>
+                <FontAwesomeIcon icon={faBookReader} />
                 <span>Pending</span>
-              </Typography>
+              </h6>
             </Tab>
           </TabsHeader>
 
@@ -63,14 +57,10 @@ export default function Caregivers() {
                 <div key={index} className='flex flex-row gap-0.5 mb-1'>
                   {[
                     <>
-                      <Typography variant='paragraph'>
-                        <span>
-                          {caregiver.firstName} {caregiver.lastName}
-                        </span>
-                      </Typography>
-                      <Typography variant='small'>
-                        <span>{caregiver.email}</span>
-                      </Typography>
+                      <p>
+                        {caregiver.firstName} {caregiver.lastName}
+                      </p>
+                      <p className={'text-sm'}>{caregiver.email}</p>
                     </>,
                     caregiver.address,
                     caregiver.phone,

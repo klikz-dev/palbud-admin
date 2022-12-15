@@ -1,10 +1,8 @@
-import {
-  ArrowRightOnRectangleIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { Button, IconButton, Typography } from '@material-tailwind/react'
+import Button from '@/components/atoms/Button'
 import Link from '@/components/atoms/Link'
 import Logo from '@/components/molecules/Logo'
+import { faArrowRight, faX } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { signOut } from 'next-auth/react'
 
 export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
@@ -17,20 +15,18 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
       <div className={`relative border-b ${'border-white/20'}`}>
         <Link href='/' className='flex items-center gap-4 py-6 px-8'>
           <Logo />
-          <Typography variant='h6' color={'white'}>
-            palbud Admin
-          </Typography>
+          <h5 className={'text-white'}>palbud Admin</h5>
         </Link>
 
-        <IconButton
+        <Button
           variant='text'
           color='white'
           size='sm'
           className='absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden'
           onClick={() => setOpenSidenav(false)}
         >
-          <XMarkIcon strokeWidth={2.5} className='h-5 w-5 text-white' />
-        </IconButton>
+          <FontAwesomeIcon icon={faX} />
+        </Button>
       </div>
 
       <div className='m-4'>
@@ -48,12 +44,7 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
                   fullWidth
                 >
                   {icon}
-                  <Typography
-                    color='inherit'
-                    className='font-medium capitalize'
-                  >
-                    {title}
-                  </Typography>
+                  <span className='font-medium capitalize'>{title}</span>
                 </Button>
               </Link>
             </li>
@@ -67,10 +58,8 @@ export default function Sidenav({ routes, openSidenav, setOpenSidenav }) {
               fullWidth
               onClick={signOut}
             >
-              <ArrowRightOnRectangleIcon width={24} />
-              <Typography color='inherit' className='font-medium capitalize'>
-                Sign Out
-              </Typography>
+              <FontAwesomeIcon icon={faArrowRight} />
+              <span className='font-medium capitalize'>Sign Out</span>
             </Button>
           </li>
         </ul>
