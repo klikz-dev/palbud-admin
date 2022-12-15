@@ -1,13 +1,10 @@
+import Container from '@/components/atoms/Container'
 import Layout from '@/components/common/Layout'
-import Tabs, {
-  Tab,
-  TabPanel,
-  TabsBody,
-  TabsHeader,
-} from '@/components/molecules/Tabs'
+import { TabsBody, TabsHeader } from '@/components/molecules/Tabs'
 import Chart from '@/components/organisms/Chart'
 import { useCollection } from '@/functions/useCollection'
 import dateFormat from 'dateformat'
+import { useState } from 'react'
 
 export default function Overview() {
   const { data: caregivers } = useCollection('caregiver')
@@ -149,66 +146,82 @@ export default function Overview() {
     },
   ]
 
+  const [activeTab, setActiveTab] = useState('caregivers')
+
   return (
     <Layout title='Overview'>
-      <div className='py-8'>
-        <Tabs value='caregivers'>
-          <TabsHeader>
-            <Tab key='caregivers' value='caregivers' className='py-3'>
-              <p>Caregivers</p>
-              <h3>
-                <span>{caregivers?.length}</span>
-              </h3>
-            </Tab>
+      <Container className={'my-12'}>
+        <TabsHeader
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          headers={[
+            {
+              key: 'caregivers',
+              content: (
+                <>
+                  <p>Caregivers</p>
+                  <h3>
+                    <span>{caregivers?.length}</span>
+                  </h3>
+                </>
+              ),
+            },
+            {
+              key: 'families',
+              content: (
+                <>
+                  <p>Families</p>
+                  <h3>
+                    <span>{families?.length}</span>
+                  </h3>
+                </>
+              ),
+            },
+            {
+              key: 'matches',
+              content: (
+                <>
+                  <p>Matches</p>
+                  <h3>
+                    <span>{matches?.length}</span>
+                  </h3>
+                </>
+              ),
+            },
+          ]}
+        />
 
-            <Tab key='families' value='families' className='py-3'>
-              <p>Families</p>
-              <h3>
-                <span>{families?.length}</span>
-              </h3>
-            </Tab>
-
-            <Tab key='matches' value='matches' className='py-3'>
-              <p>Matches</p>
-              <h3>
-                <span>{matches?.length}</span>
-              </h3>
-            </Tab>
-          </TabsHeader>
-
-          <TabsBody>
-            <TabPanel
-              key='caregivers'
-              value='scaregivers'
-              style={{ minHeight: '500px' }}
-            >
-              <div style={{ height: '400px' }}>
-                <Chart data={caregiverChartdata} />
-              </div>
-            </TabPanel>
-
-            <TabPanel
-              key='families'
-              value='families'
-              style={{ minHeight: '500px' }}
-            >
-              <div style={{ height: '400px' }}>
-                <Chart data={familyChartdata} />
-              </div>
-            </TabPanel>
-
-            <TabPanel
-              key='matches'
-              value='matches'
-              style={{ minHeight: '500px' }}
-            >
-              <div style={{ height: '400px' }}>
-                <Chart data={matchChartdata} />
-              </div>
-            </TabPanel>
-          </TabsBody>
-        </Tabs>
-      </div>
+        <TabsBody
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          bodies={[
+            {
+              key: 'caregivers',
+              content: (
+                <div style={{ height: '400px' }}>
+                  <Chart data={caregiverChartdata} />
+                </div>
+              ),
+            },
+            {
+              key: 'families',
+              content: (
+                <div style={{ height: '400px' }}>
+                  <Chart data={familyChartdata} />
+                </div>
+              ),
+            },
+            {
+              key: 'matches',
+              content: (
+                <div style={{ height: '400px' }}>
+                  <Chart data={matchChartdata} />
+                </div>
+              ),
+            },
+          ]}
+        />
+      </Container>
 
       <div className='shadow rounded p-6'>
         <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>

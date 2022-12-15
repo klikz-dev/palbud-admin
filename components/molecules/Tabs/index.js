@@ -1,1 +1,1 @@
-export { default, TabsHeader, Tab, TabsBody, TabPanel } from './Tabs'
+export { TabsHeader, TabsBody } from './Tabs'
