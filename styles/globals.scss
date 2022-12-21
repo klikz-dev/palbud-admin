@@ -10,35 +10,39 @@ html {
 
 h1,
 .h1 {
-  @apply text-5xl font-display;
+  @apply text-4xl font-display;
 }
 
 h2,
 .h2 {
-  @apply text-4xl font-display;
+  @apply text-3xl font-display;
 }
 
 h3,
 .h3 {
-  @apply text-3xl font-display;
+  @apply text-2xl font-display;
 }
 
 h4,
 .h4 {
-  @apply text-2xl font-display font-bold;
+  @apply text-xl font-display font-bold;
 }
 
 h5,
 .h5 {
-  @apply text-xl font-display;
+  @apply text-lg font-display;
 }
 
 h6,
 .h6 {
-  @apply text-lg font-display;
+  @apply text-base font-display;
 }
 
 p,
 .p {
-  @apply text-base font-display;
+  @apply text-sm font-display;
+}
+
+input {
+  @apply text-sm;
 }

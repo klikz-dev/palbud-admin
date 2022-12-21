@@ -1,17 +1,16 @@
 import { firestore } from '@/lib/firebase'
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs } from 'firebase/firestore'
 import useSWR from 'swr'
 
 const fetcher = ({ collectionName }) =>
   getDocs(collection(firestore, collectionName)).then((querySnapshot) => {
-    const elements = []
+    const docs = []
 
     querySnapshot.forEach((doc) => {
-      const element = doc.data()
-      elements.push(element)
+      docs.push({ id: doc.id, ...doc.data() })
     })
 
-    return elements
+    return docs
   })
 
 export function useCollection(collectionName) {

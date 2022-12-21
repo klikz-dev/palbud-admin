@@ -1,5 +1,5 @@
 import { firestore } from '@/lib/firebase'
-import { doc, getDoc } from 'firebase/firestore/lite'
+import { doc, getDoc } from 'firebase/firestore'
 
 export default async function getDocument(collectionName, id) {
   try {

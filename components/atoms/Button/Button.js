@@ -33,7 +33,7 @@ export default function Button({
 }
 
 Button.propTypes = {
-  color: PropTypes.oneOf(['purple', 'transparent']),
+  color: PropTypes.oneOf(['indigo', 'transparent']),
   size: PropTypes.oneOf(['sm', 'md', 'lg', 'full']),
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
@@ -42,7 +42,7 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-  color: 'black',
+  color: 'indigo',
   size: 'md',
   disabled: false,
 }

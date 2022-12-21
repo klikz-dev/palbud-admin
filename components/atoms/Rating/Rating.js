@@ -19,11 +19,11 @@ export default function Rating({ rating }) {
         style={{ width: `${rating * 20}%` }}
       >
         <div className='flex justify-between w-24'>
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} className={'text-yellow-400'} />
+          <FontAwesomeIcon icon={faStar} className={'text-yellow-400'} />
+          <FontAwesomeIcon icon={faStar} className={'text-yellow-400'} />
+          <FontAwesomeIcon icon={faStar} className={'text-yellow-400'} />
+          <FontAwesomeIcon icon={faStar} className={'text-yellow-400'} />
         </div>
       </div>
     </div>

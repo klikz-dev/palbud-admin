@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 export function TabsHeader({ headers, activeTab, setActiveTab }) {
   return (
-    <div className='flex flex-row gap-1'>
+    <div className='flex flex-row gap-2'>
       {headers.map((header, index) => (
         <div
           key={index}
@@ -10,11 +10,8 @@ export function TabsHeader({ headers, activeTab, setActiveTab }) {
             activeTab === header.key
               ? 'shadow-xl bg-indigo-200'
               : 'bg-indigo-100/80',
-            `text-center rounded p-3`
+            `text-center rounded px-12 py-4 cursor-pointer`
           )}
-          style={{
-            width: `${100 / headers.length}%`,
-          }}
           onClick={() => setActiveTab(header.key)}
         >
           {header.content}

@@ -11,6 +11,8 @@ export default function Overview() {
   const { data: families } = useCollection('family')
   const { data: matches } = useCollection('match')
 
+  console.log(caregivers)
+
   const caregiverChartdata = [
     {
       name: 'Jun',
@@ -223,35 +225,41 @@ export default function Overview() {
         />
       </Container>
 
-      <div className='shadow rounded p-6'>
-        <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>
+      <Container>
+        <div className='shadow rounded p-6'>
+          <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>
 
-        <div>
-          <div className='flex flex-row gap-0.5 mb-2'>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Parent</div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
-              Child/Client
+          <div>
+            <div className='flex flex-row gap-0.5 mb-2'>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Parent</div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
+                Child/Client
+              </div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
+                Caregiver
+              </div>
+              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Date</div>
             </div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Caregiver</div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Date</div>
+
+            {families?.map((family, index) => (
+              <div key={index} className='flex flex-row gap-0.5 mb-1'>
+                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                  {family.firstName} {family.lastName}
+                </div>
+                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                  {family.childFirstName} {family.childLastName}
+                </div>
+                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                  John Lee
+                </div>
+                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
+                  {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
+                </div>
+              </div>
+            ))}
           </div>
-
-          {families?.map((family, index) => (
-            <div key={index} className='flex flex-row gap-0.5 mb-1'>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {family.firstName} {family.lastName}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {family.childFirstName} {family.childLastName}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>John Lee</div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
-              </div>
-            </div>
-          ))}
         </div>
-      </div>
+      </Container>
     </Layout>
   )
 }
