@@ -22,7 +22,7 @@ export default function Caregivers() {
   function onUpdateStatus(id, status) {
     updateDoc(doc(firestore, 'caregiver', id), {
       status: status,
-      step: '',
+      step: 'Photo',
     }).then(() => {
       setActiveTab('active')
     })
