@@ -3,10 +3,10 @@ import Layout from '@/components/common/Layout'
 import { TabsBody, TabsHeader } from '@/components/molecules/Tabs'
 import Chart from '@/components/organisms/Chart'
 import { useCollection } from '@/functions/useCollection'
-import dateFormat from 'dateformat'
 import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import getDaysInRange from '@/functions/getDaysInRange'
+import getDocument from '@/functions/getDocument'
 
 export default function Overview() {
   const { data: caregivers } = useCollection('caregiver')
@@ -14,32 +14,87 @@ export default function Overview() {
   const { data: matches } = useCollection('match')
 
   function getChartDate(data, dateKey = 'createdAt') {
-    const report = data
-      .sort((a, b) => (a[dateKey].seconds > b[dateKey].seconds ? 1 : -1))
-      .reduce((sum, ele) => {
-        const month = moment(ele[dateKey].seconds * 1000).format('YYYY-MM-DD')
+    if (data) {
+      const report = data
+        .sort((a, b) => (a[dateKey].seconds > b[dateKey].seconds ? 1 : -1))
+        .reduce((sum, ele) => {
+          const month = moment(ele[dateKey].seconds * 1000).format('YYYY-MM-DD')
 
-        sum[month] = sum[month] ?? 0
-        sum[month]++
+          sum[month] = sum[month] ?? 0
+          sum[month]++
 
-        return sum
-      }, [])
+          return sum
+        }, [])
 
-    const startDate = Object.keys(report)[0]
-    const endDate = Object.keys(report)[Object.keys(report).length - 1]
-    const days = getDaysInRange(new Date(startDate), new Date(endDate))
+      const startDate = Object.keys(report)[0]
+      const endDate = Object.keys(report)[Object.keys(report).length - 1]
+      const days = getDaysInRange(new Date(startDate), new Date(endDate))
 
-    const chartData = days.map((day) => {
-      return {
-        name: day,
-        signup: report[day] ?? 0,
-      }
-    })
+      const chartData = days.map((day) => {
+        return {
+          name: day,
+          signup: report[day] ?? 0,
+        }
+      })
 
-    return chartData
+      return chartData
+    }
+
+    return []
   }
 
   const [activeTab, setActiveTab] = useState('caregivers')
+
+  const FamilyTd = ({ familyId }) => {
+    const [family, setFamily] = useState({})
+    useEffect(() => {
+      async function getData() {
+        const family = await getDocument('family', familyId)
+        setFamily(family)
+      }
+      getData()
+    }, [])
+
+    return (
+      <p>
+        {family?.firstName} {family?.lastName}
+      </p>
+    )
+  }
+
+  const ChildTD = ({ familyId }) => {
+    const [family, setFamily] = useState({})
+    useEffect(() => {
+      async function getData() {
+        const family = await getDocument('family', familyId)
+        setFamily(family)
+      }
+      getData()
+    }, [])
+
+    return (
+      <p>
+        {family?.childFirstName} {family?.childLastName}
+      </p>
+    )
+  }
+
+  const CaregiverTD = ({ caregiverId }) => {
+    const [caregiver, setCaregiver] = useState({})
+    useEffect(() => {
+      async function getData() {
+        const caregiver = await getDocument('caregiver', caregiverId)
+        setCaregiver(caregiver)
+      }
+      getData()
+    }, [])
+
+    return (
+      <p>
+        {caregiver?.firstName} {caregiver?.lastName}
+      </p>
+    )
+  }
 
   return (
     <Layout title='Overview'>
@@ -137,26 +192,20 @@ export default function Overview() {
             </thead>
 
             <tbody>
-              {families?.map((family, i1) => (
+              {matches?.map((match, i1) => (
                 <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
                   {[
                     <>
-                      <p>
-                        {family.firstName} {family.lastName}
-                      </p>
+                      <FamilyTd familyId={match.family} />
                     </>,
                     <>
-                      <p>
-                        {family.childFirstName} {family.childLastName}
-                      </p>
+                      <ChildTD familyId={match.family} />
                     </>,
                     <>
-                      <p>John Lee</p>
+                      <CaregiverTD caregiverId={match.caregiver} />
                     </>,
                     <>
-                      <span>
-                        {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
-                      </span>
+                      <p>{moment(match.updated?.seconds * 1000).calendar()}</p>
                     </>,
                   ].map((td, i2) => (
                     <td
