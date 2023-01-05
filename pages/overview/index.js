@@ -4,149 +4,40 @@ import { TabsBody, TabsHeader } from '@/components/molecules/Tabs'
 import Chart from '@/components/organisms/Chart'
 import { useCollection } from '@/functions/useCollection'
 import dateFormat from 'dateformat'
+import moment from 'moment'
 import { useState } from 'react'
+import getDaysInRange from '@/functions/getDaysInRange'
 
 export default function Overview() {
   const { data: caregivers } = useCollection('caregiver')
   const { data: families } = useCollection('family')
   const { data: matches } = useCollection('match')
 
-  console.log(caregivers)
+  function getChartDate(data, dateKey = 'createdAt') {
+    const report = data
+      .sort((a, b) => (a[dateKey].seconds > b[dateKey].seconds ? 1 : -1))
+      .reduce((sum, ele) => {
+        const month = moment(ele[dateKey].seconds * 1000).format('YYYY-MM-DD')
 
-  const caregiverChartdata = [
-    {
-      name: 'Jun',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'July',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'August',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'September',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Octorber',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'November',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'December',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ]
+        sum[month] = sum[month] ?? 0
+        sum[month]++
 
-  const familyChartdata = [
-    {
-      name: 'Jun',
-      uv: 400,
-      pv: 240,
-      amt: 240,
-    },
-    {
-      name: 'July',
-      uv: 300,
-      pv: 139,
-      amt: 221,
-    },
-    {
-      name: 'August',
-      uv: 20,
-      pv: 90,
-      amt: 229,
-    },
-    {
-      name: 'September',
-      uv: 278,
-      pv: 39,
-      amt: 200,
-    },
-    {
-      name: 'Octorber',
-      uv: 189,
-      pv: 480,
-      amt: 211,
-    },
-    {
-      name: 'November',
-      uv: 239,
-      pv: 380,
-      amt: 250,
-    },
-    {
-      name: 'December',
-      uv: 349,
-      pv: 430,
-      amt: 210,
-    },
-  ]
+        return sum
+      }, [])
 
-  const matchChartdata = [
-    {
-      name: 'Jun',
-      uv: 40,
-      pv: 24,
-      amt: 24,
-    },
-    {
-      name: 'July',
-      uv: 30,
-      pv: 13,
-      amt: 22,
-    },
-    {
-      name: 'August',
-      uv: 20,
-      pv: 90,
-      amt: 20,
-    },
-    {
-      name: 'September',
-      uv: 20,
-      pv: 38,
-      amt: 10,
-    },
-    {
-      name: 'Octorber',
-      uv: 18,
-      pv: 48,
-      amt: 21,
-    },
-    {
-      name: 'November',
-      uv: 23,
-      pv: 38,
-      amt: 20,
-    },
-    {
-      name: 'December',
-      uv: 34,
-      pv: 43,
-      amt: 20,
-    },
-  ]
+    const startDate = Object.keys(report)[0]
+    const endDate = Object.keys(report)[Object.keys(report).length - 1]
+    const days = getDaysInRange(new Date(startDate), new Date(endDate))
+
+    const chartData = days.map((day) => {
+      return {
+        name: day,
+        signup: report[day] ?? 0,
+      }
+    })
+
+    return chartData
+  }
 
   const [activeTab, setActiveTab] = useState('caregivers')
 
@@ -201,7 +92,7 @@ export default function Overview() {
               key: 'caregivers',
               content: (
                 <div style={{ height: '400px' }}>
-                  <Chart data={caregiverChartdata} />
+                  <Chart data={getChartDate(caregivers)} />
                 </div>
               ),
             },
@@ -209,7 +100,7 @@ export default function Overview() {
               key: 'families',
               content: (
                 <div style={{ height: '400px' }}>
-                  <Chart data={familyChartdata} />
+                  <Chart data={getChartDate(families)} />
                 </div>
               ),
             },
@@ -217,7 +108,7 @@ export default function Overview() {
               key: 'matches',
               content: (
                 <div style={{ height: '400px' }}>
-                  <Chart data={matchChartdata} />
+                  <Chart data={getChartDate(matches, 'created')} />
                 </div>
               ),
             },
@@ -229,35 +120,56 @@ export default function Overview() {
         <div className='shadow rounded p-6'>
           <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>
 
-          <div>
-            <div className='flex flex-row gap-0.5 mb-2'>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Parent</div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
-                Child/Client
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
-                Caregiver
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Date</div>
-            </div>
+          <table className='table-auto border-collapse border border-slate-400 w-full'>
+            <thead>
+              <tr>
+                {['Parent', 'Child/Client', 'Caregiver', 'Date'].map(
+                  (th, index) => (
+                    <th
+                      key={index}
+                      className='p-2 border border-slate-300 bg-slate-200'
+                    >
+                      {th}
+                    </th>
+                  )
+                )}
+              </tr>
+            </thead>
 
-            {families?.map((family, index) => (
-              <div key={index} className='flex flex-row gap-0.5 mb-1'>
-                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                  {family.firstName} {family.lastName}
-                </div>
-                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                  {family.childFirstName} {family.childLastName}
-                </div>
-                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                  John Lee
-                </div>
-                <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                  {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
-                </div>
-              </div>
-            ))}
-          </div>
+            <tbody>
+              {families?.map((family, i1) => (
+                <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
+                  {[
+                    <>
+                      <p>
+                        {family.firstName} {family.lastName}
+                      </p>
+                    </>,
+                    <>
+                      <p>
+                        {family.childFirstName} {family.childLastName}
+                      </p>
+                    </>,
+                    <>
+                      <p>John Lee</p>
+                    </>,
+                    <>
+                      <span>
+                        {dateFormat(new Date(), 'mm/dd/yy hh:mm TT Z')}
+                      </span>
+                    </>,
+                  ].map((td, i2) => (
+                    <td
+                      key={i2}
+                      className='p-2 border border-slate-300 text-center'
+                    >
+                      {td}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Container>
     </Layout>

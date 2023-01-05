@@ -31,11 +31,11 @@ export default function Chart({ data }) {
         <Line
           yAxisId='right'
           type='monotone'
-          dataKey='pv'
+          dataKey='signup'
           stroke='#8884d8'
           activeDot={{ r: 8 }}
         />
-        <Line yAxisId='right' type='monotone' dataKey='uv' stroke='#82ca9d' />
+        {/* <Line yAxisId='right' type='monotone' dataKey='uv' stroke='#82ca9d' /> */}
       </LineChart>
     </ResponsiveContainer>
   )
