@@ -7,7 +7,7 @@ import Footer from '@/components/organisms/Footer'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faCogs,
+  // faCogs,
   faHomeAlt,
   faUserCircle,
   faUserGroup,
@@ -33,11 +33,11 @@ export default function Layout({ title, children }) {
       link: '/careteams',
       icon: <FontAwesomeIcon icon={faUserGroup} width={20} />,
     },
-    {
-      title: 'Settings',
-      link: '/settings',
-      icon: <FontAwesomeIcon icon={faCogs} width={20} />,
-    },
+    // {
+    //   title: 'Settings',
+    //   link: '/settings',
+    //   icon: <FontAwesomeIcon icon={faCogs} width={20} />,
+    // },
   ]
 
   const [openSidenav, setOpenSidenav] = useState(true)

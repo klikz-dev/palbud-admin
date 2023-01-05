@@ -12,7 +12,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 
 export default function Caregivers() {
-  const { data: caregivers } = useCollection('caregiver')
+  const { data: caregivers, mutate } = useCollection('caregiver')
 
   const [activeTab, setActiveTab] = useState('active')
 
@@ -21,7 +21,7 @@ export default function Caregivers() {
       status: status,
       step: 'Photo',
     }).then(() => {
-      setActiveTab('active')
+      mutate()
     })
   }
 
@@ -66,7 +66,7 @@ export default function Caregivers() {
             {
               key: 'active',
               content: (
-                <table className='table-auto border-collapse border border-slate-400'>
+                <table className='table-auto border-collapse border border-slate-400 w-full'>
                   <thead className=''>
                     <tr>
                       {[
@@ -142,7 +142,7 @@ export default function Caregivers() {
             {
               key: 'pending',
               content: (
-                <table className='table-auto border-collapse border border-slate-400'>
+                <table className='table-auto border-collapse border border-slate-400 w-full'>
                   <thead className=''>
                     <tr>
                       {[
@@ -176,10 +176,14 @@ export default function Caregivers() {
                               <p>
                                 {caregiver.firstName} {caregiver.lastName}
                               </p>
-                              <p className={'text-sm'}>{caregiver.email}</p>
+                              <p className={'text-xs'}>{caregiver.email}</p>
                             </>,
-                            caregiver.address,
-                            caregiver.phone,
+                            <>
+                              <p className='text-sm'>{caregiver.address}</p>
+                            </>,
+                            <>
+                              <p className='text-sm'>{caregiver.phone}</p>
+                            </>,
                             <>
                               <Link href={`/caregivers/${caregiver.id}`}>
                                 <Button color={'indigo'} size={'sm'}>
@@ -187,13 +191,17 @@ export default function Caregivers() {
                                 </Button>
                               </Link>
                             </>,
-                            caregiver.lastActivity?.seconds
-                              ? `${dateFormat(
-                                  new Date(
-                                    caregiver.lastActivity?.seconds * 1000
-                                  )
-                                )}`
-                              : '',
+                            <>
+                              <p className='text-sm'>
+                                {caregiver.lastActivity?.seconds
+                                  ? dateFormat(
+                                      new Date(
+                                        caregiver.lastActivity?.seconds * 1000
+                                      )
+                                    )
+                                  : ''}
+                              </p>
+                            </>,
                             <>
                               <Button
                                 color={'indigo'}

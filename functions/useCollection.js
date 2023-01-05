@@ -14,10 +14,14 @@ const fetcher = ({ collectionName }) =>
   })
 
 export function useCollection(collectionName) {
-  const { data, error } = useSWR({ collectionName: collectionName }, fetcher)
+  const { data, mutate, error } = useSWR(
+    { collectionName: collectionName },
+    fetcher
+  )
 
   return {
     data: data,
+    mutate: mutate,
     error: error,
     loading: !error && !data,
   }

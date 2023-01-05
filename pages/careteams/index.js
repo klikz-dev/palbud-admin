@@ -1,61 +1,93 @@
+import Button from '@/components/atoms/Button'
 import Layout from '@/components/common/Layout'
 import { useCollection } from '@/functions/useCollection'
+import { firestore } from '@/lib/firebase'
+import { doc, updateDoc } from 'firebase/firestore'
+import moment from 'moment'
 
 export default function Careteams() {
-  const { data: families } = useCollection('caregiver')
+  const { data: families, mutate } = useCollection('family')
+
+  function onUpdateStatus(id, status) {
+    updateDoc(doc(firestore, 'family', id), {
+      status: status,
+    }).then(() => {
+      mutate()
+    })
+  }
 
   return (
     <Layout title='Care Teams'>
       <div className='p-4 max-w-6xl mx-auto shadow border rounded mt-12'>
         <h4 className='mb-4 pb-2 border-b'>All Care Teams</h4>
 
-        <div className='py-12 max-w-6xl mx-auto'>
-          <div className='flex flex-row gap-0.5 mb-2 text-center'>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
-              Parent Name
-            </div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Child Name</div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Activity</div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>
-              Subscription
-            </div>
-            <div className='w-1/4 p-2 rounded bg-blue-gray-100'>Access</div>
-          </div>
+        <table className='table-auto border-collapse border border-slate-400 w-full'>
+          <thead className=''>
+            <tr>
+              {['Full Name', 'Activity', 'Status', 'Access'].map((th) => (
+                <th
+                  key={th}
+                  className='p-2 border border-slate-300 bg-slate-200'
+                >
+                  {th}
+                </th>
+              ))}
+            </tr>
+          </thead>
 
-          {families?.map((family, index) => (
-            <div key={index} className='flex flex-row gap-0.5 mb-1 text-center'>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {family.firstName} {family.lastName}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {family.childFirstName} {family.childLastName}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {/* <Chip variant='filled' value='Active' /> */}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {/* <Chip variant='filled' value='Active' /> */}
-              </div>
-              <div className='w-1/4 p-2 rounded bg-blue-gray-50'>
-                {/* <Menu>
-                  <MenuHandler>
-                    <Button variant='text'>
-                      <div className='flex flex-row items-center'>
-                        <span>Full Access</span>
-                        <ChevronDownIcon width={16} />
-                      </div>
+          <tbody>
+            {families.map((family, i1) => (
+              <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
+                {[
+                  <>
+                    <p>
+                      {family.firstName} {family.lastName}
+                    </p>
+                    <p className={'text-xs'}>{family.email}</p>
+                  </>,
+                  <>
+                    <p className='text-sm'>
+                      {family.lastActivity?.seconds
+                        ? moment(family.lastActivity?.seconds * 1000)
+                            .startOf('hour')
+                            .fromNow()
+                        : ''}
+                    </p>
+                  </>,
+                  <>
+                    <p className='text-sm capitalize'>{family.status}</p>
+                  </>,
+                  <>
+                    <Button
+                      color={'indigo'}
+                      size={'sm'}
+                      className={'block mb-1 w-full'}
+                      onClick={() => onUpdateStatus(family.id, 'active')}
+                    >
+                      Approve
                     </Button>
-                  </MenuHandler>
-                  <MenuList>
-                    <MenuItem>Full Access</MenuItem>
-                    <MenuItem>Suspend</MenuItem>
-                    <MenuItem>Delete</MenuItem>
-                  </MenuList>
-                </Menu> */}
-              </div>
-            </div>
-          ))}
-        </div>
+
+                    <Button
+                      color={'indigo'}
+                      size={'sm'}
+                      className={'block mb-1 w-full'}
+                      onClick={() => onUpdateStatus(family.id, 'suspended')}
+                    >
+                      Reject
+                    </Button>
+                  </>,
+                ].map((td, i2) => (
+                  <td
+                    key={i2}
+                    className='p-2 border border-slate-300 text-center'
+                  >
+                    {td}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </Layout>
   )
