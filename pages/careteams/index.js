@@ -36,7 +36,7 @@ export default function Careteams() {
           </thead>
 
           <tbody>
-            {families.map((family, i1) => (
+            {families?.map((family, i1) => (
               <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
                 {[
                   <>
