@@ -64,7 +64,7 @@ export default function Careteams() {
                       className={'block mb-1 w-full'}
                       onClick={() => onUpdateStatus(family.id, 'active')}
                     >
-                      Approve
+                      Full Access
                     </Button>
 
                     <Button
@@ -73,7 +73,7 @@ export default function Careteams() {
                       className={'block mb-1 w-full'}
                       onClick={() => onUpdateStatus(family.id, 'suspended')}
                     >
-                      Reject
+                      Suspend
                     </Button>
                   </>,
                 ].map((td, i2) => (
