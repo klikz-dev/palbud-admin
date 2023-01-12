@@ -71,7 +71,7 @@ export default function Caregiver({ caregiver }) {
             <div className='grid grid-cols-2 gap-4 pb-4 border-b border-zinc-300'>
               <div className='flex flex-row justify-center items-center'>
                 <div className='w-40 h-40 rounded-full relative overflow-hidden'>
-                  <Image src={caregiver.image} fill={true} cover={true} />
+                  <Image src={caregiver?.image} fill={true} cover={true} />
                 </div>
               </div>
 
@@ -81,24 +81,24 @@ export default function Caregiver({ caregiver }) {
                 </span>
 
                 <h4 className='my-2'>
-                  {caregiver.firstName} {caregiver.lastName}
+                  {caregiver?.firstName} {caregiver?.lastName}
                 </h4>
 
-                <p>{caregiver.address}</p>
+                <p>{caregiver?.address}</p>
 
-                <p className='text-zinc-600 text-sm mt-4'>{caregiver.bio}</p>
+                <p className='text-zinc-600 text-sm mt-4'>{caregiver?.bio}</p>
               </div>
             </div>
 
             <div className='py-3'>
               <p className='text-xs text-zinc-400 mb-0.5'>Email</p>
-              <p className='font-semibold mb-3'>{caregiver.email}</p>
+              <p className='font-semibold mb-3'>{caregiver?.email}</p>
 
               <p className='text-xs text-zinc-400 mb-0.5'>Phone</p>
-              <p className='font-semibold mb-3'>{caregiver.phone}</p>
+              <p className='font-semibold mb-3'>{caregiver?.phone}</p>
 
               <p className='text-xs text-zinc-400 mb-0.5'>Birthday</p>
-              <p className='font-semibold mb-3'>{caregiver.birth}</p>
+              <p className='font-semibold mb-3'>{caregiver?.birth}</p>
             </div>
           </div>
 
@@ -106,50 +106,52 @@ export default function Caregiver({ caregiver }) {
             <h3 className='underline font-semibold mb-4'>Experience</h3>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Experience Years</p>
-            <p className='font-semibold mb-3'>{caregiver.experienceYears}</p>
+            <p className='font-semibold mb-3'>{caregiver?.experienceYears}</p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Services</p>
             <p className='font-semibold mb-3'>
-              {caregiver.services?.join(', ')}
+              {caregiver?.services?.join(', ')}
             </p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Expertise</p>
             <p className='font-semibold mb-3'>
-              {caregiver.expertises?.join(', ')}
+              {caregiver?.expertises?.join(', ')}
             </p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Regulations</p>
             <p className='font-semibold mb-3'>
-              {caregiver.regulations?.join(', ')}
+              {caregiver?.regulations?.join(', ')}
             </p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Client Age</p>
-            <p className='font-semibold mb-3'>{caregiver.clientAge}</p>
+            <p className='font-semibold mb-3'>{caregiver?.clientAge}</p>
           </div>
 
           <div className='rounded p-4 border border-zinc-200'>
             <h3 className='underline font-semibold mb-4'>Information</h3>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Status</p>
-            <p className='font-semibold mb-3 capitalize'>{caregiver.status}</p>
+            <p className='font-semibold mb-3 capitalize'>{caregiver?.status}</p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>Hourly Rate</p>
-            <p className='font-semibold mb-3 capitalize'>{caregiver.hourly}</p>
+            <p className='font-semibold mb-3 capitalize'>{caregiver?.hourly}</p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>
               {'Education Disciplines'}
             </p>
             <p className='font-semibold mb-3'>
-              {caregiver.educationDisciplines?.join(', ')}
+              {caregiver?.educationDisciplines?.join(', ')}
             </p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>{'Education Levels'}</p>
             <p className='font-semibold mb-3'>
-              {caregiver.educationLevels?.join(', ')}
+              {caregiver?.educationLevels?.join(', ')}
             </p>
 
             <p className='text-xs text-zinc-400 mb-0.5'>{'Get By'}</p>
-            <p className='font-semibold mb-3'>{caregiver.getBys?.join(', ')}</p>
+            <p className='font-semibold mb-3'>
+              {caregiver?.getBys?.join(', ')}
+            </p>
           </div>
         </div>
 
@@ -174,7 +176,7 @@ export default function Caregiver({ caregiver }) {
 
             <tbody>
               {matches
-                ?.filter((match) => match.caregiver === caregiver.id)
+                ?.filter((match) => match.caregiver === caregiver?.id)
                 ?.map((match, i1) => (
                   <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
                     {[
@@ -215,6 +217,12 @@ export async function getStaticProps({ params }) {
    * Post Content
    */
   const caregiver = await getDocument('caregiver', params.id)
+
+  if (!caregiver) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
