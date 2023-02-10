@@ -12,6 +12,7 @@ export default function Overview() {
   const { data: caregivers } = useCollection('caregiver')
   const { data: families } = useCollection('family')
   const { data: matches } = useCollection('match')
+  const { data: schedules } = useCollection('schedule')
 
   function getChartDate(data, dateKey = 'createdAt') {
     if (data) {
@@ -44,6 +45,7 @@ export default function Overview() {
   }
 
   const [activeTab, setActiveTab] = useState('caregivers')
+  const [activeCareTab, setActiveCareTab] = useState('upcoming')
 
   const FamilyTd = ({ familyId }) => {
     const [family, setFamily] = useState({})
@@ -175,50 +177,185 @@ export default function Overview() {
         <div className='shadow rounded p-6'>
           <h4 className='mb-4 pb-2 border-b'>Caregiving Sessions</h4>
 
-          <table className='table-auto border-collapse border border-slate-400 w-full'>
-            <thead>
-              <tr>
-                {['Parent', 'Child/Client', 'Caregiver', 'Date'].map(
-                  (th, index) => (
-                    <th
-                      key={index}
-                      className='p-2 border border-slate-300 bg-slate-200'
-                    >
-                      {th}
-                    </th>
-                  )
-                )}
-              </tr>
-            </thead>
+          <TabsHeader
+            activeTab={activeCareTab}
+            setActiveTab={setActiveCareTab}
+            headers={[
+              {
+                key: 'upcoming',
+                content: (
+                  <>
+                    <p>Upcoming</p>
+                  </>
+                ),
+              },
+              {
+                key: 'closed',
+                content: (
+                  <>
+                    <p>Closed</p>
+                  </>
+                ),
+              },
+            ]}
+          />
 
-            <tbody>
-              {matches?.map((match, i1) => (
-                <tr key={i1} className={i1 % 2 === 1 ? 'bg-slate-100' : ''}>
-                  {[
-                    <>
-                      <FamilyTd familyId={match.family} />
-                    </>,
-                    <>
-                      <ChildTD familyId={match.family} />
-                    </>,
-                    <>
-                      <CaregiverTD caregiverId={match.caregiver} />
-                    </>,
-                    <>
-                      <p>{moment(match.updated?.seconds * 1000).calendar()}</p>
-                    </>,
-                  ].map((td, i2) => (
-                    <td
-                      key={i2}
-                      className='p-2 border border-slate-300 text-center'
-                    >
-                      {td}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TabsBody
+            activeTab={activeCareTab}
+            setActiveTab={setActiveCareTab}
+            bodies={[
+              {
+                key: 'upcoming',
+                content: (
+                  <div>
+                    <table className='table-auto border-collapse border border-slate-400 w-full'>
+                      <thead>
+                        <tr>
+                          {['Parent', 'Child/Client', 'Caregiver', 'Date'].map(
+                            (th, index) => (
+                              <th
+                                key={index}
+                                className='p-2 border border-slate-300 bg-slate-200'
+                              >
+                                {th}
+                              </th>
+                            )
+                          )}
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {schedules
+                          ?.filter((schedule) => {
+                            if (
+                              schedule.repeat === 'NONE' &&
+                              moment(schedule.start * 1000) < moment()
+                            ) {
+                              return false
+                            }
+                            if (
+                              schedule.status === 'declined' ||
+                              schedule.status === 'pending' ||
+                              schedule.status === 'closed'
+                            ) {
+                              return false
+                            }
+
+                            return true
+                          })
+                          ?.sort((a, b) => (a.start < b.start ? -1 : 1))
+                          ?.map((schedule, i1) => (
+                            <tr
+                              key={i1}
+                              className={i1 % 2 === 1 ? 'bg-slate-100' : ''}
+                            >
+                              {[
+                                <>
+                                  <FamilyTd familyId={schedule.family} />
+                                </>,
+                                <>
+                                  <ChildTD familyId={schedule.family} />
+                                </>,
+                                <>
+                                  <CaregiverTD
+                                    caregiverId={schedule.caregiver}
+                                  />
+                                </>,
+                                <>
+                                  <p>
+                                    {moment(schedule.start * 1000).calendar()}
+                                  </p>
+                                </>,
+                              ].map((td, i2) => (
+                                <td
+                                  key={i2}
+                                  className='p-2 border border-slate-300 text-center'
+                                >
+                                  {td}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+              },
+              {
+                key: 'closed',
+                content: (
+                  <div>
+                    <table className='table-auto border-collapse border border-slate-400 w-full'>
+                      <thead>
+                        <tr>
+                          {['Parent', 'Child/Client', 'Caregiver', 'Date'].map(
+                            (th, index) => (
+                              <th
+                                key={index}
+                                className='p-2 border border-slate-300 bg-slate-200'
+                              >
+                                {th}
+                              </th>
+                            )
+                          )}
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {schedules
+                          ?.filter((schedule) => {
+                            if (
+                              schedule.repeat === 'NONE' &&
+                              moment(schedule.start * 1000) < moment()
+                            ) {
+                              return true
+                            }
+                            if (schedule.status === 'closed') {
+                              return true
+                            }
+
+                            return false
+                          })
+                          ?.sort((a, b) => (a.start < b.start ? -1 : 1))
+                          ?.map((schedule, i1) => (
+                            <tr
+                              key={i1}
+                              className={i1 % 2 === 1 ? 'bg-slate-100' : ''}
+                            >
+                              {[
+                                <>
+                                  <FamilyTd familyId={schedule.family} />
+                                </>,
+                                <>
+                                  <ChildTD familyId={schedule.family} />
+                                </>,
+                                <>
+                                  <CaregiverTD
+                                    caregiverId={schedule.caregiver}
+                                  />
+                                </>,
+                                <>
+                                  <p>
+                                    {moment(schedule.start * 1000).calendar()}
+                                  </p>
+                                </>,
+                              ].map((td, i2) => (
+                                <td
+                                  key={i2}
+                                  className='p-2 border border-slate-300 text-center'
+                                >
+                                  {td}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
+              },
+            ]}
+          />
         </div>
       </Container>
     </Layout>
