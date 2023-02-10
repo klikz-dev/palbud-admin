@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     optionsSuccessStatus: 200,
   })
 
-  const { from, to, subject, html, csv } = JSON.parse(req.body)
+  const { from, to, subject, html, csv } = req.body
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
