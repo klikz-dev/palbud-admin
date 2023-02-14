@@ -8,7 +8,14 @@ import { firestore } from '@/lib/firebase'
 import { faBookReader, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import dateFormat from 'dateformat'
-import { doc, updateDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 import { useState } from 'react'
 
 export default function Caregivers() {
@@ -22,6 +29,25 @@ export default function Caregivers() {
       step: 'Photo',
     }).then(() => {
       mutate()
+    })
+  }
+
+  async function suspendCaregiver(id) {
+    updateDoc(doc(firestore, 'caregiver', id), {
+      status: 'suspended',
+    }).then(() => {
+      mutate()
+    })
+
+    const querySnapshot = await getDocs(
+      query(collection(firestore, 'match'), where('caregiver', '==', id))
+    )
+    querySnapshot.forEach((snap) => {
+      updateDoc(doc(firestore, 'match', snap.id), {
+        status: 'suspended',
+      }).then(() => {
+        mutate()
+      })
     })
   }
 
@@ -131,9 +157,7 @@ export default function Caregivers() {
                                 color={'red'}
                                 size={'sm'}
                                 className={'block mb-1 w-full'}
-                                onClick={() =>
-                                  onUpdateStatus(caregiver.id, 'suspended')
-                                }
+                                onClick={() => suspendCaregiver(caregiver.id)}
                               >
                                 Suspend
                               </Button>
