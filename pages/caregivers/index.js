@@ -75,6 +75,7 @@ export default function Caregivers() {
                         'Contact',
                         'Profile',
                         'Last Seen',
+                        'Actions',
                       ].map((th) => (
                         <th
                           key={th}
@@ -124,6 +125,18 @@ export default function Caregivers() {
                                     )
                                   : ''}
                               </p>
+                            </>,
+                            <>
+                              <Button
+                                color={'red'}
+                                size={'sm'}
+                                className={'block mb-1 w-full'}
+                                onClick={() =>
+                                  onUpdateStatus(caregiver.id, 'suspended')
+                                }
+                              >
+                                Suspend
+                              </Button>
                             </>,
                           ].map((td, i2) => (
                             <td
@@ -214,7 +227,7 @@ export default function Caregivers() {
                                 Approve
                               </Button>
                               <Button
-                                color={'indigo'}
+                                color={'red'}
                                 size={'sm'}
                                 className={'block mb-1 w-full'}
                                 onClick={() =>

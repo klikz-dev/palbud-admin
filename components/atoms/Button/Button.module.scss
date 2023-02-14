@@ -23,6 +23,11 @@
     @apply text-white bg-indigo-800 hover:bg-indigo-900;
   }
 
+  /* Colors */
+  &.red {
+    @apply text-white bg-red-800 hover:bg-red-900;
+  }
+
   &.transparent {
     @apply text-white bg-none hover:bg-white/5;
   }
